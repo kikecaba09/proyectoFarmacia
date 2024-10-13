@@ -146,6 +146,32 @@ public class UsuarioDAOImp implements UsuarioDAO {
 
     @Override
     public Usuario obtenerUsuarioPorCredenciales(String usuario, String contrasena) {
-        return null;
+        Usuario usuarioEncontrado = null;
+        String sql = "SELECT * FROM usuario WHERE usuario = ? AND contrasena = ?";
+
+        try (Connection connection = ConexionBD.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, usuario);
+            statement.setString(2, contrasena);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                usuarioEncontrado = new Usuario(
+                        resultSet.getInt("idUsuario"),
+                        resultSet.getString("nombre"),
+                        resultSet.getString("apellido"),
+                        resultSet.getInt("edad"),
+                        resultSet.getString("email"),
+                        resultSet.getString("usuario"),
+                        resultSet.getString("contrasena"),
+                        resultSet.getString("rol")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return usuarioEncontrado;
     }
 }

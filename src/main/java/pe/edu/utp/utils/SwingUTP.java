@@ -37,11 +37,11 @@ public class SwingUTP {
         tipo = LayoutType.FreeDraw;
     }
 
-    public static void addClickEvent(JButton control, Consumer action){
+    public static void addClickEvent(JButton control, Consumer<ActionEvent> action) {
         control.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                action.accept(e);
+                action.accept(e); // Accept the ActionEvent
             }
         });
     }

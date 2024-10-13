@@ -3,6 +3,7 @@ package pe.edu.utp.view;
 import javax.swing.*;
 import java.awt.*;
 import pe.edu.utp.dao.UsuarioDAO;
+import pe.edu.utp.daoImp.UsuarioDAOImp;
 import pe.edu.utp.models.Usuario;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -100,20 +101,19 @@ public class LoginView extends JFrame {
 
         add(panelFondo, BorderLayout.CENTER);
 
+        // Inicializar el DAO
+        usuarioDAO = new UsuarioDAOImp();
+
         btnLogin.addActionListener(e -> {
             String usuario = txtUsuario.getText();
             String contrasena = new String(txtContrasena.getPassword());
 
             if (validarCredenciales(usuario, contrasena)) {
-                JOptionPane.showMessageDialog(LoginView.this,
-                        "Inicio de sesión exitoso");
-                IndexView mainView = new IndexView();
+                IndexView mainView = new IndexView(); // Cambia a tu vista principal
                 mainView.setVisible(true);
-                dispose();
+                dispose(); // Cierra la ventana de inicio de sesión
             } else {
-                JOptionPane.showMessageDialog(LoginView.this,
-                        "Credenciales incorrectas", "Error",
-                        JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(LoginView.this, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
