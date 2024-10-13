@@ -1,6 +1,6 @@
-package pe.edu.utp.Controllers;
+package pe.edu.utp.controllers;
 
-import pe.edu.utp.Dao.AlertaDAO;
+import pe.edu.utp.dao.AlertaDAO;
 import pe.edu.utp.daoImp.AlertaDAOImp;
 import pe.edu.utp.models.Alerta;
 import java.sql.SQLException;

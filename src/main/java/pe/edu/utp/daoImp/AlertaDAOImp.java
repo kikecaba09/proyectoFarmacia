@@ -1,7 +1,7 @@
 package pe.edu.utp.daoImp;
 
-import pe.edu.utp.Dao.AlertaDAO;
-import pe.edu.utp.Ejecucion.ConexionBD;
+import pe.edu.utp.dao.AlertaDAO;
+import pe.edu.utp.ejecucion.ConexionBD;
 import pe.edu.utp.models.Alerta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

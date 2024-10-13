@@ -1,4 +1,4 @@
-package pe.edu.utp.Ejecucion;
+package pe.edu.utp.ejecucion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

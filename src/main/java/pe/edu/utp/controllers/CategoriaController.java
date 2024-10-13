@@ -1,6 +1,6 @@
-package pe.edu.utp.Controllers;
+package pe.edu.utp.controllers;
 
-import pe.edu.utp.Dao.CategoriaDAO;
+import pe.edu.utp.dao.CategoriaDAO;
 import pe.edu.utp.daoImp.CategoriaDAOImp;
 import pe.edu.utp.models.Categoria;
 import java.sql.SQLException;

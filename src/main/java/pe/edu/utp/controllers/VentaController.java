@@ -1,6 +1,6 @@
-package pe.edu.utp.Controllers;
+package pe.edu.utp.controllers;
 
-import pe.edu.utp.Dao.VentaDAO;
+import pe.edu.utp.dao.VentaDAO;
 import pe.edu.utp.daoImp.VentaDAOImp;
 import pe.edu.utp.models.Venta;
 import java.sql.Date;

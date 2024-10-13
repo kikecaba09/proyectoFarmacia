@@ -1,7 +1,7 @@
 package pe.edu.utp.daoImp;
 
-import pe.edu.utp.Dao.MedicamentoDAO;
-import pe.edu.utp.Ejecucion.ConexionBD;
+import pe.edu.utp.dao.MedicamentoDAO;
+import pe.edu.utp.ejecucion.ConexionBD;
 import pe.edu.utp.models.Medicamento;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package pe.edu.utp.Dao;
+package pe.edu.utp.dao;
 
 import pe.edu.utp.models.Alerta;
 import java.sql.SQLException;

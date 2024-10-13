@@ -1,7 +1,7 @@
 package pe.edu.utp.daoImp;
 
-import pe.edu.utp.Dao.UsuarioDAO;
-import pe.edu.utp.Ejecucion.ConexionBD;
+import pe.edu.utp.dao.UsuarioDAO;
+import pe.edu.utp.ejecucion.ConexionBD;
 import pe.edu.utp.models.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

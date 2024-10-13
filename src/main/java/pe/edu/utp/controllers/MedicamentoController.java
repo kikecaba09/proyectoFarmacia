@@ -1,6 +1,6 @@
-package pe.edu.utp.Controllers;
+package pe.edu.utp.controllers;
 
-import pe.edu.utp.Dao.MedicamentoDAO;
+import pe.edu.utp.dao.MedicamentoDAO;
 import pe.edu.utp.daoImp.MedicamentoDAOImp;
 import pe.edu.utp.models.Medicamento;
 import java.sql.SQLException;

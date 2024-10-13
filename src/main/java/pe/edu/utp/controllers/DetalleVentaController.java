@@ -1,7 +1,7 @@
-package pe.edu.utp.Controllers;
+package pe.edu.utp.controllers;
 
 
-import pe.edu.utp.Dao.DetalleVentaDAO;
+import pe.edu.utp.dao.DetalleVentaDAO;
 import pe.edu.utp.daoImp.DetalleVentaDAOImp;
 import pe.edu.utp.models.DetalleVenta;
 import java.sql.SQLException;

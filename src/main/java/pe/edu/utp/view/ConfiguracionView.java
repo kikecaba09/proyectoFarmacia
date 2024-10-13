@@ -1,4 +1,4 @@
-package pe.edu.utp.Formularios;
+package pe.edu.utp.view;
 
 public class ConfiguracionView {
 }

@@ -1,7 +1,7 @@
 package pe.edu.utp.daoImp;
 
-import pe.edu.utp.Dao.CategoriaDAO;
-import pe.edu.utp.Ejecucion.ConexionBD;
+import pe.edu.utp.dao.CategoriaDAO;
+import pe.edu.utp.ejecucion.ConexionBD;
 import pe.edu.utp.models.Categoria;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

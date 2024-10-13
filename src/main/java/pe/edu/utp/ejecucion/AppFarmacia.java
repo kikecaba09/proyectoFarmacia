@@ -1,6 +1,6 @@
-package pe.edu.utp.Ejecucion;
+package pe.edu.utp.ejecucion;
 
-import pe.edu.utp.Formularios.LoginView;
+import pe.edu.utp.view.LoginView;
 
 public class AppFarmacia {
     public static void main(String[] args) {
