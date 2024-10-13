@@ -13,4 +13,6 @@ public interface UsuarioDAO {
     void agregarUsuario(Usuario usuario) throws SQLException;
     void actualizarUsuario(Usuario usuario) throws SQLException;
     void eliminarUsuario(int idUsuario) throws SQLException;
+
+    Usuario obtenerUsuarioPorCredenciales(String usuario, String contrasena);
 }

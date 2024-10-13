@@ -143,4 +143,9 @@ public class UsuarioDAOImp implements UsuarioDAO {
             preparedStatement.executeUpdate();
         }
     }
+
+    @Override
+    public Usuario obtenerUsuarioPorCredenciales(String usuario, String contrasena) {
+        return null;
+    }
 }
