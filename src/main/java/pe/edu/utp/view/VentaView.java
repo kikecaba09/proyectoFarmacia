@@ -1,6 +1,8 @@
 package pe.edu.utp.view;
 
-public class VentaView {
+import javax.swing.*;
+
+public class VentaView extends JPanel {
     public void setVisible(boolean b) {
     }
 }

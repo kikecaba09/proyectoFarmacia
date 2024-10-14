@@ -1,6 +1,8 @@
 package pe.edu.utp.view;
 
-public class ConfiguracionView {
+import javax.swing.*;
+
+public class ConfiguracionView extends JPanel {
     public void setVisible(boolean b) {
     }
 }

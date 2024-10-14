@@ -33,7 +33,7 @@ public class LoginView extends JFrame {
 
         Font titleFont = new Font("Arial", Font.BOLD, 24);
         Font labelFont = new Font("Arial", Font.PLAIN, 18);
-        Color primaryColor = new Color(0, 163, 224);
+        Color primaryColor = new Color(14, 6, 6);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;

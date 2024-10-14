@@ -1,6 +1,8 @@
 package pe.edu.utp.view;
 
-public class AlertaView {
+import javax.swing.*;
+
+public class AlertaView extends JPanel {
     public void setVisible(boolean b) {
     }
 }
