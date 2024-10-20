@@ -39,17 +39,20 @@ public class LoginView extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        JLabel lblImage = new JLabel(new ImageIcon("src/main/resources/logo.png"));
+        // Redimensionar la imagen del logo antes de agregarla
+        JLabel lblImage = new JLabel(resizeImage("src/main/resources/logo.png", 200, 200)); // Tamaño más pequeño
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
         panelIzquierdo.add(lblImage, gbc);
+
 
         JLabel lblTitulo = new JLabel("INICIAR SESIÓN");
         lblTitulo.setFont(titleFont);
         lblTitulo.setForeground(primaryColor);
         gbc.gridy++;
         panelIzquierdo.add(lblTitulo, gbc);
+
 
         JLabel lblUsuario = new JLabel("USUARIO:");
         lblUsuario.setFont(labelFont);
