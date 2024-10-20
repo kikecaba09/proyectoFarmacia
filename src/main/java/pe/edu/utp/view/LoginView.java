@@ -33,14 +33,14 @@ public class LoginView extends JFrame {
 
         Font titleFont = new Font("Arial", Font.BOLD, 24);
         Font labelFont = new Font("Arial", Font.PLAIN, 18);
-        Color primaryColor = new Color(14, 6, 6);
+        Color primaryColor = new Color(243, 6, 6);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
 
         // Redimensionar la imagen del logo antes de agregarla
-        JLabel lblImage = new JLabel(resizeImage("src/main/resources/logo.png", 200, 200)); // Tamaño más pequeño
+        JLabel lblImage = new JLabel(resizeImage("src/main/resources/logo.png", 200, 180)); // Tamaño más pequeño
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
