@@ -3,43 +3,20 @@ package pe.edu.utp.controllers;
 import pe.edu.utp.dao.ReporteDAO;
 import pe.edu.utp.daoImp.ReporteDAOImp;
 import pe.edu.utp.models.Reporte;
+import pe.edu.utp.models.Venta;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
 public class ReporteController {
+
     private ReporteDAO reporteDAO;
 
-    public ReporteController() {
-        this.reporteDAO = new ReporteDAOImp();
+    public ReporteController(Connection connection) {
+        this.reporteDAO = new ReporteDAOImp(connection);
     }
 
-    // Método para generar el reporte de ventas
-    public List<Reporte> generarReporteVentas() {
-        try {
-            return reporteDAO.generarReporteVentas();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    // Método para generar el reporte de inventario
-    public List<Reporte> generarReporteInventario() {
-        try {
-            return reporteDAO.generarReporteInventario();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    // Método para generar el reporte de alertas
-    public List<Reporte> generarReporteAlertas() {
-        try {
-            return reporteDAO.generarReporteAlertas();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public List<Venta> generarReporteMensual(String mes, String anio) {
+        return reporteDAO.getVentasMensuales(mes, anio);
     }
 }

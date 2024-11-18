@@ -3,6 +3,7 @@ package pe.edu.utp.ejecucion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -28,10 +29,27 @@ public class ConexionBD {
 
         try {
             Class.forName(driver);
-            return DriverManager.getConnection(url, username, password);
+            Connection connection = DriverManager.getConnection(url, username, password);
+
+            // Verificar si la conexión es válida
+            if (connection != null && !connection.isClosed()) {
+                System.out.println("Conexión exitosa a la base de datos.");
+            } else {
+                System.out.println("La conexión a la base de datos falló.");
+            }
+
+            // Realizar una consulta simple de prueba
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeQuery("SELECT 1"); // Consulta de prueba
+                System.out.println("Consulta de prueba exitosa.");
+            } catch (SQLException e) {
+                System.out.println("Error al realizar la consulta de prueba: " + e.getMessage());
+            }
+
+            return connection;
+
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Database driver not found", e);
         }
     }
 }
-

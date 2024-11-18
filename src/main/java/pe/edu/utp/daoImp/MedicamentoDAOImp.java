@@ -3,37 +3,118 @@ package pe.edu.utp.daoImp;
 import pe.edu.utp.dao.MedicamentoDAO;
 import pe.edu.utp.ejecucion.ConexionBD;
 import pe.edu.utp.models.Medicamento;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MedicamentoDAOImp implements MedicamentoDAO {
 
-    private static final String SELECT_MEDICAMENTOS_BY_CATEGORIA_SQL = "SELECT * FROM medicamento WHERE id_categoria = ?";
-    private static final String SELECT_MEDICAMENTO_BY_ID_SQL = "SELECT * FROM medicamento WHERE id_medicamento = ?";
-    private static final String UPDATE_PRECIO_SQL = "UPDATE medicamento SET precio_actual = ? WHERE id_medicamento = ?";
-    private static final String SELECT_MEDICAMENTOS_PROXIMOS_A_VENCER_SQL = "SELECT * FROM medicamento WHERE fecha_caducidad < NOW() + INTERVAL 30 DAY";
-    private static final String SELECT_MEDICAMENTOS_BY_LABORATORIO_SQL = "SELECT * FROM medicamento WHERE id_laboratorio = ?";
-    private static final String INSERT_MEDICAMENTO_SQL = "INSERT INTO medicamento (nombre, descripcion, idCategoria, idLaboratorio, fecha_ingreso, fecha_caducidad, precio_actual, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String UPDATE_MEDICAMENTO_SQL = "UPDATE medicamento SET nombre = ?, descripcion = ?, idCategoria = ?, idLaboratorio = ?, fecha_ingreso = ?, fecha_caducidad = ?, precio_actual = ?, stock = ? WHERE idMedicamento = ?";
-    private static final String DELETE_MEDICAMENTO_SQL = "DELETE FROM medicamento WHERE idMedicamento = ?";
+    private Connection connection;
+
+    public MedicamentoDAOImp() {
+        try {
+            this.connection = ConexionBD.getConnection(); // Obtener la conexión desde la clase ConexionBD
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Medicamento> obtenerTodos() {
+        List<Medicamento> medicamentos = new ArrayList<>();
+        String sql = "SELECT * FROM medicamento";  // Adjust as per your DB
+        try (Connection conn = ConexionBD.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int idMedicamento = rs.getInt("idMedicamento");
+                String nombre = rs.getString("nombre");
+                String descripcion = rs.getString("descripcion");
+                double precioActual = rs.getDouble("precio_actual");
+                int stock = rs.getInt("stock");
+
+                Medicamento medicamento = new Medicamento(idMedicamento, nombre, descripcion, precioActual, stock);
+                medicamentos.add(medicamento);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return medicamentos;
+    }
+
+
 
     @Override
-    public List<Medicamento> obtenerMedicamentosPorCategoria(int idCategoria) throws SQLException {
+    public boolean agregarMedicamento(Medicamento medicamento) {
+        String sql = "INSERT INTO medicamento (nombre, descripcion, idCategoria, idLaboratorio, fecha_ingreso, fecha_caducidad, precio_actual, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, medicamento.getNombre());
+            ps.setString(2, medicamento.getDescripcion());
+            ps.setInt(3, medicamento.getIdCategoria());
+            ps.setInt(4, medicamento.getIdLaboratorio());
+            ps.setDate(5, medicamento.getFechaIngreso());
+            ps.setDate(6, medicamento.getFechaCaducidad());
+            ps.setDouble(7, medicamento.getPrecioActual());
+            ps.setInt(8, medicamento.getStock());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean editarMedicamento(Medicamento medicamento) {
+        String sql = "UPDATE medicamento SET nombre = ?, descripcion = ?, idCategoria = ?, idLaboratorio = ?, fecha_ingreso = ?, fecha_caducidad = ?, precio_actual = ?, stock = ? WHERE idMedicamento = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, medicamento.getNombre());
+            ps.setString(2, medicamento.getDescripcion());
+            ps.setInt(3, medicamento.getIdCategoria());
+            ps.setInt(4, medicamento.getIdLaboratorio());
+            ps.setDate(5, medicamento.getFechaIngreso());
+            ps.setDate(6, medicamento.getFechaCaducidad());
+            ps.setDouble(7, medicamento.getPrecioActual());
+            ps.setInt(8, medicamento.getStock());
+            ps.setInt(9, medicamento.getIdMedicamento());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean eliminarMedicamento(int idMedicamento) {
+        String sql = "DELETE FROM medicamento WHERE idMedicamento = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idMedicamento);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<Medicamento> getAllMedicamentos() {
         List<Medicamento> medicamentos = new ArrayList<>();
-        try (Connection connection = ConexionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MEDICAMENTOS_BY_CATEGORIA_SQL)) {
-            preparedStatement.setInt(1, idCategoria);
-            ResultSet rs = preparedStatement.executeQuery();
+        String query = "SELECT * FROM medicamento";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
                 Medicamento medicamento = new Medicamento();
-                medicamento.setIdMedicamento(rs.getInt("id_medicamento"));
+                medicamento.setIdMedicamento(rs.getInt("idMedicamento"));
                 medicamento.setNombre(rs.getString("nombre"));
                 medicamento.setDescripcion(rs.getString("descripcion"));
+                medicamento.setIdCategoria(rs.getInt("idCategoria"));
+                medicamento.setIdLaboratorio(rs.getInt("idLaboratorio"));
                 medicamento.setFechaIngreso(rs.getDate("fecha_ingreso"));
                 medicamento.setFechaCaducidad(rs.getDate("fecha_caducidad"));
                 medicamento.setPrecioActual(rs.getDouble("precio_actual"));
@@ -41,23 +122,25 @@ public class MedicamentoDAOImp implements MedicamentoDAO {
                 medicamentos.add(medicamento);
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al obtener medicamentos por categoría", e);
+            e.printStackTrace();
         }
         return medicamentos;
     }
 
     @Override
-    public List<Medicamento> obtenerMedicamentosPorLaboratorio(int idLaboratorio) throws SQLException {
+    public List<Medicamento> getMedicamentosConStockMinimo(int stockMinimo) {
         List<Medicamento> medicamentos = new ArrayList<>();
-        try (Connection connection = ConexionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MEDICAMENTOS_BY_LABORATORIO_SQL)) {
-            preparedStatement.setInt(1, idLaboratorio);
-            ResultSet rs = preparedStatement.executeQuery();
+        String query = "SELECT * FROM medicamento WHERE stock <= ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, stockMinimo);
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Medicamento medicamento = new Medicamento();
-                medicamento.setIdMedicamento(rs.getInt("id_medicamento"));
+                medicamento.setIdMedicamento(rs.getInt("idMedicamento"));
                 medicamento.setNombre(rs.getString("nombre"));
                 medicamento.setDescripcion(rs.getString("descripcion"));
+                medicamento.setIdCategoria(rs.getInt("idCategoria"));
+                medicamento.setIdLaboratorio(rs.getInt("idLaboratorio"));
                 medicamento.setFechaIngreso(rs.getDate("fecha_ingreso"));
                 medicamento.setFechaCaducidad(rs.getDate("fecha_caducidad"));
                 medicamento.setPrecioActual(rs.getDouble("precio_actual"));
@@ -65,107 +148,31 @@ public class MedicamentoDAOImp implements MedicamentoDAO {
                 medicamentos.add(medicamento);
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al obtener medicamentos por laboratorio", e);
+            e.printStackTrace();
         }
         return medicamentos;
     }
 
     @Override
-    public void agregarMedicamento(Medicamento medicamento) throws SQLException {
-        try (Connection connection = ConexionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_MEDICAMENTO_SQL)) {
-            preparedStatement.setString(1, medicamento.getNombre());
-            preparedStatement.setString(2, medicamento.getDescripcion());
-            preparedStatement.setInt(3, medicamento.getIdCategoria());
-            preparedStatement.setInt(4, medicamento.getIdLaboratorio());
-            preparedStatement.setDate(5, medicamento.getFechaIngreso());
-            preparedStatement.setDate(6, medicamento.getFechaCaducidad());
-            preparedStatement.setDouble(7, medicamento.getPrecioActual());
-            preparedStatement.setInt(8, medicamento.getStock());
-            preparedStatement.executeUpdate();
+    public void actualizarStock(int idMedicamento, int nuevoStock) {
+        String query = "UPDATE medicamento SET stock = ? WHERE idMedicamento = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, nuevoStock);
+            pstmt.setInt(2, idMedicamento);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    @Override
-    public void actualizarMedicamento(Medicamento medicamento) throws SQLException {
-        try (Connection connection = ConexionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEDICAMENTO_SQL)) {
-            preparedStatement.setString(1, medicamento.getNombre());
-            preparedStatement.setString(2, medicamento.getDescripcion());
-            preparedStatement.setInt(3, medicamento.getIdCategoria());
-            preparedStatement.setInt(4, medicamento.getIdLaboratorio());
-            preparedStatement.setDate(5, medicamento.getFechaIngreso());
-            preparedStatement.setDate(6, medicamento.getFechaCaducidad());
-            preparedStatement.setDouble(7, medicamento.getPrecioActual());
-            preparedStatement.setInt(8, medicamento.getStock());
-            preparedStatement.setInt(9, medicamento.getIdMedicamento());
-            preparedStatement.executeUpdate();
-        }
-    }
-
-    @Override
-    public void eliminarMedicamento(int idMedicamento) throws SQLException {
-        try (Connection connection = ConexionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MEDICAMENTO_SQL)) {
-            preparedStatement.setInt(1, idMedicamento);
-            preparedStatement.executeUpdate();
-        }
-    }
-
-
-    @Override
-    public Medicamento obtenerMedicamentoPorId(int idMedicamento) throws SQLException {
-        Medicamento medicamento = null;
-        try (Connection connection = ConexionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MEDICAMENTO_BY_ID_SQL)) {
-            preparedStatement.setInt(1, idMedicamento);
-            ResultSet rs = preparedStatement.executeQuery();
-
-            if (rs.next()) {
-                medicamento = new Medicamento();
-                medicamento.setIdMedicamento(rs.getInt("id_medicamento"));
-                medicamento.setNombre(rs.getString("nombre"));
-                medicamento.setDescripcion(rs.getString("descripcion"));
-                medicamento.setFechaIngreso(rs.getDate("fecha_ingreso"));
-                medicamento.setFechaCaducidad(rs.getDate("fecha_caducidad"));
-                medicamento.setPrecioActual(rs.getDouble("precio_actual"));
-                medicamento.setStock(rs.getInt("stock"));
+    // Método para cerrar la conexión después de todas las operaciones (si es necesario)
+    public void cerrarConexion() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
             }
         } catch (SQLException e) {
-            throw new SQLException("Error al obtener medicamento por ID", e);
+            e.printStackTrace();
         }
-        return medicamento;
-    }
-
-    @Override
-    public void actualizarPrecioMedicamento(int idMedicamento, double nuevoPrecio) throws SQLException {
-        try (Connection connection = ConexionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRECIO_SQL)) {
-            preparedStatement.setDouble(1, nuevoPrecio);
-            preparedStatement.setInt(2, idMedicamento);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            throw new SQLException("Error al actualizar el precio del medicamento", e);
-        }
-    }
-
-    @Override
-    public List<Medicamento> obtenerMedicamentosProximosAVencer() throws SQLException {
-        List<Medicamento> medicamentos = new ArrayList<>();
-        try (Connection connection = ConexionBD.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_MEDICAMENTOS_PROXIMOS_A_VENCER_SQL)) {
-            ResultSet rs = preparedStatement.executeQuery();
-
-            while (rs.next()) {
-                Medicamento medicamento = new Medicamento();
-                medicamento.setIdMedicamento(rs.getInt("id_medicamento"));
-                medicamento.setNombre(rs.getString("nombre"));
-                medicamento.setFechaCaducidad(rs.getDate("fecha_caducidad"));
-                medicamentos.add(medicamento);
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Error al obtener medicamentos próximos a vencer", e);
-        }
-        return medicamentos;
     }
 }

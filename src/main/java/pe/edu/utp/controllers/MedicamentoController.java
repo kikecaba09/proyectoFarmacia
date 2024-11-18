@@ -3,69 +3,45 @@ package pe.edu.utp.controllers;
 import pe.edu.utp.dao.MedicamentoDAO;
 import pe.edu.utp.daoImp.MedicamentoDAOImp;
 import pe.edu.utp.models.Medicamento;
-import java.sql.SQLException;
+import java.sql.Connection;
 import java.util.List;
 
 public class MedicamentoController {
+
     private MedicamentoDAO medicamentoDAO;
 
-    public MedicamentoController() {
+    public MedicamentoController(Connection connection) {
         this.medicamentoDAO = new MedicamentoDAOImp();
     }
 
-    public List<Medicamento> obtenerMedicamentosPorCategoria(int idCategoria) {
-        try {
-            return medicamentoDAO.obtenerMedicamentosPorCategoria(idCategoria);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public List<Medicamento> obtenerTodosLosMedicamentos() {
+        List<Medicamento> medicamentos = medicamentoDAO.obtenerTodos();
+        System.out.println("Medicamentos from DAO: " + medicamentos.size());
+        return medicamentos;
     }
 
-    public Medicamento obtenerMedicamentoPorId(int idMedicamento) {
-        try {
-            return medicamentoDAO.obtenerMedicamentoPorId(idMedicamento);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+
+    public boolean agregarMedicamento(Medicamento medicamento) {
+        return medicamentoDAO.agregarMedicamento(medicamento);
     }
 
-    public void actualizarPrecioMedicamento(int idMedicamento, double nuevoPrecio) {
-        try {
-            medicamentoDAO.actualizarPrecioMedicamento(idMedicamento, nuevoPrecio);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public boolean editarMedicamento(Medicamento medicamento) {
+        return medicamentoDAO.editarMedicamento(medicamento);
     }
 
-    public List<Medicamento> obtenerMedicamentosProximosAVencer() {
-        try {
-            return medicamentoDAO.obtenerMedicamentosProximosAVencer();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public boolean eliminarMedicamento(int idMedicamento) {
+        return medicamentoDAO.eliminarMedicamento(idMedicamento);
     }
 
-    public List<Medicamento> obtenerMedicamentosPorLaboratorio(int idLaboratorio) { // Nuevo método
-        try {
-            return medicamentoDAO.obtenerMedicamentosPorLaboratorio(idLaboratorio);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public List<Medicamento> obtenerInventarioCompleto() {
+        return medicamentoDAO.getAllMedicamentos();
     }
 
-    public void agregarMedicamento(Medicamento medicamento) throws SQLException {
-        medicamentoDAO.agregarMedicamento(medicamento);
+    public List<Medicamento> verificarStockMinimo(int stockMinimo) {
+        return medicamentoDAO.getMedicamentosConStockMinimo(stockMinimo);
     }
 
-    public void actualizarMedicamento(Medicamento medicamento) throws SQLException {
-        medicamentoDAO.actualizarMedicamento(medicamento);
-    }
-
-    public void eliminarMedicamento(int idMedicamento) throws SQLException {
-        medicamentoDAO.eliminarMedicamento(idMedicamento);
+    public void actualizarStock(int idMedicamento, int nuevoStock) {
+        medicamentoDAO.actualizarStock(idMedicamento, nuevoStock);
     }
 }

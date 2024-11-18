@@ -1,17 +1,15 @@
 package pe.edu.utp.dao;
 
 import pe.edu.utp.models.Medicamento;
-import java.sql.SQLException;
 import java.util.List;
 
 public interface MedicamentoDAO {
 
-    Medicamento obtenerMedicamentoPorId(int idMedicamento) throws SQLException;
-    void actualizarPrecioMedicamento(int idMedicamento, double nuevoPrecio) throws SQLException;
-    List<Medicamento> obtenerMedicamentosProximosAVencer() throws SQLException;
-    List<Medicamento> obtenerMedicamentosPorCategoria(int idCategoria) throws SQLException;
-    List<Medicamento> obtenerMedicamentosPorLaboratorio(int idLaboratorio) throws SQLException;
-    void agregarMedicamento(Medicamento medicamento) throws SQLException;
-    void actualizarMedicamento(Medicamento medicamento) throws SQLException;
-    void eliminarMedicamento(int idMedicamento) throws SQLException;
+    List<Medicamento> obtenerTodos();
+    boolean agregarMedicamento(Medicamento medicamento);
+    boolean editarMedicamento(Medicamento medicamento);
+    boolean eliminarMedicamento(int idMedicamento);
+    List<Medicamento> getAllMedicamentos();
+    List<Medicamento> getMedicamentosConStockMinimo(int stockMinimo);
+    void actualizarStock(int idMedicamento, int nuevoStock);
 }

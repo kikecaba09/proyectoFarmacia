@@ -40,7 +40,7 @@ public class LoginView extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
 
         // Redimensionar la imagen del logo antes de agregarla
-        JLabel lblImage = new JLabel(resizeImage("src/main/resources/logo.png", 200, 180)); // Tamaño más pequeño
+        JLabel lblImage = new JLabel(resizeImage("src/main/resources/logo.png", 300, 150)); // Tamaño más pequeño
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;

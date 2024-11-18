@@ -31,6 +31,12 @@ public class Medicamento {
     public Medicamento() {
     }
 
+    public Medicamento(int idMedicamento, String nombre, String descripcion, int idCategoria, int idLaboratorio, Date fechaIngreso, Date fechaCaducidad, double precioActual, int stock) {
+    }
+
+    public Medicamento(int id, String nombre, String descripcion, double precio, int stock) {
+    }
+
     public int getIdMedicamento() {
         return idMedicamento;
     }
